@@ -7,7 +7,7 @@
  */
 
 /**
- * Description of helper
+ * Simple Helper Functions
  *
  * @author tp
  */

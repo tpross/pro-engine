@@ -15,11 +15,14 @@ class kernel {
     
     //    http://pecl.php.net/package/yaml
     private $neededExtensions = array('yaml');
+    private $yaml = null;
     private $database = null;
     
     public function __construct() {
         helper::echobr('Hello Kernel');
         $this->checkExtensions();
+
+        $this->yaml = new yaml();
         $this->readConfig();
         
         return true;
@@ -27,9 +30,10 @@ class kernel {
     
     private function readConfig() {
         helper::echobr('readConfig');
-        $data = yaml_parse_file('kernel/config.yml');
         
-        var_dump($data);
+        $this->yaml->readFile('kernel/config.yml');
+        
+        var_dump($this->yaml->getFileData());
         
         return true;
     }
