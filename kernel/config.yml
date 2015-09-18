@@ -1,0 +1,11 @@
+## Config Database
+parameters:
+    user: 
+    password: 
+    host: 
+    database: 
+    
+test:
+    test1: bli
+    test2: bla
+    test3: blub
