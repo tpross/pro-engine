@@ -13,6 +13,7 @@
  */
 class kernel {
     
+    //    http://pecl.php.net/package/yaml
     private $neededExtensions = array('yaml');
     private $database = null;
     
