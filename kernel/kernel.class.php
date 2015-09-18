@@ -26,7 +26,11 @@ class kernel {
     
     private function readConfig() {
         helper::echobr('readConfig');
-//        yaml_parse();
+        $data = yaml_parse_file('kernel/config.yml');
+        
+        var_dump($data);
+        
+        return true;
     }
     
     private function checkExtensions() {
