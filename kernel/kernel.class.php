@@ -7,7 +7,7 @@
  */
 
 /**
- * Description of kernel
+ * App-Class
  *
  * @author TP
  */
@@ -18,33 +18,60 @@ class kernel {
     private $yaml = null;
     private $database = null;
     
+    /**
+     * Constructor
+     * 
+     * @return boolean
+     */
     public function __construct() {
+        
         helper::echobr('Hello Kernel');
         $this->checkExtensions();
 
-        $this->yaml = new yaml();
-        $this->readConfig();
+        $this->yaml = new yaml('kernel/config.yml');
+        helper::echobr($this->yaml->getFileName());
+        helper::echobr($this->readConfig());
         
         return true;
     }
     
+    /**
+     * Read the necessary Config Values
+     * @todo Under Construction
+     * 
+     * @return string
+     */
     private function readConfig() {
+        
+        $msg = '';
+        
         helper::echobr('readConfig');
         
-        $this->yaml->readFile('kernel/config.yml');
+        if(true === $this->yaml->readFile()) {
+            var_dump($this->yaml->getFileData());
+            
+            $msg = "Configuration succsessfully loaded ";
+        } else {
+            $msg = "Error Reading Config ";
+        }
         
-        var_dump($this->yaml->getFileData());
-        
-        return true;
+        return $msg . $this->yaml->getFileName();
     }
     
+    /**
+     * Check the necessary Extenions like yaml
+     * $this->neededExtensions
+     * @todo Under Construction
+     * 
+     * @return boolean
+     */
     private function checkExtensions() {
         
         foreach($this->neededExtensions as $ext) {
             if(true === extension_loaded($ext)) {
-                helper::echobr($ext . ' loaded');
+                helper::echobr("Extension: <strong>$ext</strong> loaded");
             } else {
-                helper::echobr($ext . ' not loaded');
+                helper::echobr("Extension: <strong>$ext</strong> not loaded");
                 return false;
             }
         }

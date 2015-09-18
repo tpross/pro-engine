@@ -30,6 +30,14 @@ class helper {
         return true;
     }
     
+    /**
+     * Quick set of Error Reporting
+     * 
+     * @todo Under Construction
+     * 
+     * @param string $art
+     * @return boolean
+     */
     static function setErrorReporting($art = '') {
         
         switch($art) {
