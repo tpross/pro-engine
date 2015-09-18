@@ -4,6 +4,8 @@
  * @author Tobias Pross
  * 
  * @copyright (c) 2015, Tobias Pross
+ * 
+ * @todo Namespaces
  */
 
 /**
@@ -50,7 +52,7 @@ class kernel {
         if(true === $this->yaml->readFile()) {
             var_dump($this->yaml->getFileData());
             
-            $msg = "Configuration succsessfully loaded ";
+            $msg = "Configuration successfully loaded ";
         } else {
             $msg = "Error Reading Config ";
         }
