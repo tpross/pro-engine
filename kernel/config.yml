@@ -1,0 +1,6 @@
+## Config Database
+parameters:
+    user: tpross
+    password: tpross
+    host: localhost
+    database: tpross
