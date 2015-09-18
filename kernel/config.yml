@@ -1,9 +1,9 @@
 ## Config Database
 parameters:
-    user: 
-    password: 
-    host: 
-    database: 
+    user: tpross
+    password: tpross
+    host: localhost
+    database: tpross
     
 test:
     test1: bli
