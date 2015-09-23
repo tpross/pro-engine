@@ -7,12 +7,20 @@
  */
 
 /**
+ * Inherited class must use the same class-Name as the needed extension
+ */
+interface iExtensions
+{
+    static function installDescription();
+}
+
+/**
  * Handling YAML-Files (YAML Ain't Markup Language)
  * 
  * @author TP
  */
 
-abstract class abstractYaml 
+abstract class abstractYaml implements iExtensions
 {
     protected $fileName = null;
     protected $fileData = null;
@@ -91,6 +99,16 @@ abstract class abstractYaml
     public function getFileData() {
         
         return $this->fileData;
+    }
+    
+    static function installDescription() {
+        helper::echobr("<strong>Short Install Description (Linux):</strong>");
+        helper::echobr("<i>sudo apt-get install php-pear libyaml-dev</i>");
+        helper::echobr("<i>pecl install yaml</i>");
+        helper::echobr("<i>vi /etc/php5/apache2/php.ini</i>");
+        helper::echobr("<i>add: extension = yaml.so</i>");
+        helper::echobr("<i>sudo service apache2 restart</i>");
+        helper::echobr("<i>http://pecl.php.net/package/yaml</i>");
     }
     
     /**

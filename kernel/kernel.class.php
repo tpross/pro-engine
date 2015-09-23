@@ -15,7 +15,6 @@
  */
 class kernel {
     
-    //    http://pecl.php.net/package/yaml
     private $neededExtensions = array('yaml');
     private $yaml = null;
     private $database = null;
@@ -74,6 +73,7 @@ class kernel {
                 helper::echobr("Extension: <strong>$ext</strong> loaded");
             } else {
                 helper::echobr("Extension: <strong>$ext</strong> not loaded");
+                $ext::installDescription();
                 return false;
             }
         }
