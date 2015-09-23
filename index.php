@@ -1,19 +1,15 @@
 <?php
+use \Kernel\Helper as Helper;
 
 // Autoload Klassen
-spl_autoload_register(function($class){
-    include "kernel/{$class}.class.php";
+\spl_autoload_register(function($class){
+    $strParts = explode('\\', $class);
+    include "kernel/" . end($strParts) . ".class.php";
 });
 
-helper::setErrorReporting('all');
+Helper\helper::setErrorReporting('most');
 
 //phpinfo();
 
-//if(extension_loaded(yaml)) {
-//    helper::echobr("yaml loaded");
-//} else {
-//    helper::echobr("install yaml"); 
-//}
-
 //$helper = new helper();
-$kernel = new kernel();
+$kernel = new Kernel\kernel();

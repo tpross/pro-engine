@@ -1,4 +1,5 @@
 <?php
+namespace Kernel\Helper;
 
 /**
  * @author Tobias Pross

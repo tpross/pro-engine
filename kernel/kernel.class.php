@@ -1,11 +1,14 @@
 <?php
+namespace Kernel;
 
+use \Kernel\Helper as Helper;
+use \Kernel\Yaml as Yaml;
 /**
  * @author Tobias Pross
  * 
  * @copyright (c) 2015, Tobias Pross
  * 
- * @todo Namespaces
+ * @todo Namespaces Namespaces umschreiben / use verwenden
  */
 
 /**
@@ -26,12 +29,12 @@ class kernel {
      */
     public function __construct() {
         
-        helper::echobr('Hello Kernel');
+        Helper\helper::echobr('Hello Kernel');
         $this->checkExtensions();
 
-        $this->yaml = new yaml('kernel/config.yml');
-        helper::echobr($this->yaml->getFileName());
-        helper::echobr($this->readConfig());
+        $this->yaml = new Yaml\yaml('kernel/config.yml');
+        Helper\helper::echobr($this->yaml->getFileName());
+        Helper\helper::echobr($this->readConfig());
         
         return true;
     }
@@ -46,10 +49,10 @@ class kernel {
         
         $msg = '';
         
-        helper::echobr('readConfig');
+        Helper\helper::echobr('readConfig');
         
         if(true === $this->yaml->readFile()) {
-            var_dump($this->yaml->getFileData());
+            \var_dump($this->yaml->getFileData());
             
             $msg = "Configuration successfully loaded ";
         } else {
@@ -69,11 +72,14 @@ class kernel {
     private function checkExtensions() {
         
         foreach($this->neededExtensions as $ext) {
-            if(true === extension_loaded($ext)) {
-                helper::echobr("Extension: <strong>$ext</strong> loaded");
-            } else {
-                helper::echobr("Extension: <strong>$ext</strong> not loaded");
+            if(true === \extension_loaded($ext)) {
+                Helper\helper::echobr("Extension: <strong>$ext</strong> loaded");
+                $ext = __NAMESPACE__ . "\\" . ucfirst($ext). "\\$ext";
+                echo $ext;
+//                echo yamlGetNamespace();
                 $ext::installDescription();
+            } else {
+                Helper\helper::echobr("Extension: <strong>$ext</strong> not loaded");
                 return false;
             }
         }

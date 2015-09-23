@@ -1,4 +1,7 @@
 <?php
+namespace Kernel\Yaml;
+
+use Kernel\Helper as Helper;
 
 /**
  * @author Tobias Pross
@@ -7,7 +10,7 @@
  */
 
 /**
- * Inherited class must use the same class-Name as the needed extension
+ * Inherited class/namespace must use the same class-Name as the needed extension
  */
 interface iExtensions
 {
@@ -20,7 +23,7 @@ interface iExtensions
  * @author TP
  */
 
-abstract class abstractYaml implements iExtensions
+abstract class aYaml implements iExtensions
 {
     protected $fileName = null;
     protected $fileData = null;
@@ -102,13 +105,16 @@ abstract class abstractYaml implements iExtensions
     }
     
     static function installDescription() {
-        helper::echobr("<strong>Short Install Description (Linux):</strong>");
-        helper::echobr("<i>sudo apt-get install php-pear libyaml-dev</i>");
-        helper::echobr("<i>pecl install yaml</i>");
-        helper::echobr("<i>vi /etc/php5/apache2/php.ini</i>");
-        helper::echobr("<i>add: extension = yaml.so</i>");
-        helper::echobr("<i>sudo service apache2 restart</i>");
-        helper::echobr("<i>http://pecl.php.net/package/yaml</i>");
+        Helper\helper::echobr("");
+        Helper\helper::echobr("");
+        Helper\helper::echobr("<strong>Short Install Description (Linux):</strong>");
+        Helper\helper::echobr("<i>type: sudo apt-get install php-pear libyaml-dev</i>");
+        Helper\helper::echobr("<i>type: pecl install yaml</i>");
+        Helper\helper::echobr("<i>type: vi /etc/php5/apache2/php.ini</i>");
+        Helper\helper::echobr("<i>add: extension = yaml.so</i>");
+        Helper\helper::echobr("<i>type: sudo service apache2 restart</i>");
+        Helper\helper::echobr("<i><a href='http://pecl.php.net/package/yaml' target='_blank'>http://pecl.php.net/package/yaml</a></i>");
+        Helper\helper::echobr("");
     }
     
     /**
@@ -122,7 +128,7 @@ abstract class abstractYaml implements iExtensions
     }
 }
 
-class yaml extends abstractYaml 
+class yaml extends aYaml 
 {
     public function __construct($fileName) {
         
