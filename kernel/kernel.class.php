@@ -76,10 +76,9 @@ class kernel {
                 Helper\helper::echobr("Extension: <strong>$ext</strong> loaded");
                 $ext = __NAMESPACE__ . "\\" . ucfirst($ext). "\\$ext";
                 echo $ext;
-//                echo yamlGetNamespace();
-                $ext::installDescription();
             } else {
                 Helper\helper::echobr("Extension: <strong>$ext</strong> not loaded");
+                $ext::installDescription();
                 return false;
             }
         }
