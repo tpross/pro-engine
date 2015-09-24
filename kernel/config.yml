@@ -9,3 +9,10 @@ test:
     test1: bli
     test2: bla
     test3: blub
+    
+smarty:
+    dir: libs/smarty-3.1.27/
+    templatesDir: web/templates/
+    templates_cDir: web/templates_c/
+    configsDir: web/configs/
+    cacheDir: web/cache/

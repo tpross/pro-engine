@@ -21,6 +21,7 @@ class kernel {
     private $neededExtensions = array('yaml');
     private $yaml = null;
     private $database = null;
+//    public $smarty = null;
     
     /**
      * Constructor
