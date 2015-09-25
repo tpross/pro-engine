@@ -115,6 +115,8 @@ abstract class aYaml implements iExtensions
         Helper\helper::echobr("<i>type: sudo service apache2 restart</i>");
         Helper\helper::echobr("<i><a href='http://pecl.php.net/package/yaml' target='_blank'>http://pecl.php.net/package/yaml</a></i>");
         Helper\helper::echobr("");
+        
+        return true;
     }
     
     /**

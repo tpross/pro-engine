@@ -3,12 +3,14 @@ namespace Kernel;
 
 use \Kernel\Helper as Helper;
 use \Kernel\Yaml as Yaml;
+use \Kernel\Smarty as Smarty;
 /**
  * @author Tobias Pross
  * 
  * @copyright (c) 2015, Tobias Pross
  * 
  * @todo Namespaces Namespaces umschreiben / use verwenden
+ * @todo Exception Handling
  */
 
 /**
@@ -20,8 +22,10 @@ class kernel {
     
     private $neededExtensions = array('yaml');
     private $yaml = null;
+    private $config = null;
     private $database = null;
-//    public $smarty = null;
+    private $kernelMsg = array();
+    public $smarty = null;
     
     /**
      * Constructor
@@ -30,12 +34,21 @@ class kernel {
      */
     public function __construct() {
         
-        Helper\helper::echobr('Hello Kernel');
+//        Helper\helper::echobr('Hello Kernel');
+        $this->setKernelMsg('Hello Kernel');
+        
         $this->checkExtensions();
 
         $this->yaml = new Yaml\yaml('kernel/config.yml');
-        Helper\helper::echobr($this->yaml->getFileName());
-        Helper\helper::echobr($this->readConfig());
+//        Helper\helper::echobr($this->yaml->getFileName());
+        $this->setKernelMsg("Config-File: <strong>" . $this->yaml->getFileName() . "</strong>");
+        $readConfigMsg = $this->readConfig();
+//        Helper\helper::echobr($readConfigMsg);
+        $this->setKernelMsg($readConfigMsg);
+        
+        $GLOBALS['smartyLibPath'] = $this->config['smarty']['dir'];
+        $this->smarty = new Smarty\smarty_pe($this->config['smarty']);
+        $this->setKernelMsg("Smarty successfully loaded");
         
         return true;
     }
@@ -50,10 +63,12 @@ class kernel {
         
         $msg = '';
         
-        Helper\helper::echobr('readConfig');
+//        Helper\helper::echobr('readConfig');
+        $this->setKernelMsg('readConfig');
         
         if(true === $this->yaml->readFile()) {
-            \var_dump($this->yaml->getFileData());
+//            \var_dump($this->yaml->getFileData());
+            $this->config = $this->yaml->getFileData();
             
             $msg = "Configuration successfully loaded ";
         } else {
@@ -74,11 +89,14 @@ class kernel {
         
         foreach($this->neededExtensions as $ext) {
             if(true === \extension_loaded($ext)) {
-                Helper\helper::echobr("Extension: <strong>$ext</strong> loaded");
+//                Helper\helper::echobr("Extension: <strong>$ext</strong> loaded");
+                $this->setKernelMsg("Extension: <strong>$ext</strong> loaded");
                 $ext = __NAMESPACE__ . "\\" . ucfirst($ext). "\\$ext";
-                echo $ext;
+//                Helper\helper::echobr("namespace: <strong>$ext</strong>");
+                $this->setKernelMsg("namespace: <strong>$ext</strong>");
             } else {
-                Helper\helper::echobr("Extension: <strong>$ext</strong> not loaded");
+//                Helper\helper::echobr("Extension: <strong>$ext</strong> not loaded");
+                $this->setKernelMsg("Extension: <strong>$ext</strong> not loaded");
                 $ext::installDescription();
                 return false;
             }
@@ -87,7 +105,26 @@ class kernel {
         return true;
     }
     
+    protected function setKernelMsg($msg) {
+        
+        \array_push($this->kernelMsg, $msg);
+        
+        return true;
+    }
+    
+    public function getKernelMsg() {
+        
+        return $this->kernelMsg;
+    }
+    
     public function __destruct() {
+        
+        $this->neededExtensions = null;
+        $this->yaml = null;
+        $this->config = null;
+        $this->database = null;
+        $this->smarty = null;
+        $this->kernelMsg = null;
         
         return true;
     }

@@ -1,0 +1,32 @@
+/* 
+    Created on : 25.09.2015, 25.09.2015 10:11:33
+    Author     : User
+*/
+
+body {
+    font-family: sans-serif;
+}
+
+nav ul {
+    text-align: left;
+}
+
+nav li {
+    display: inline-block;
+}
+
+nav a {
+    display: block;
+    width: 10em;
+    font-style: normal;
+}
+
+nav a:focus,
+nav a:hover,
+nav a:active {
+    font-weight: bolder;
+}
+
+nav a:visited {
+    color: blue;
+}
