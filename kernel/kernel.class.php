@@ -10,7 +10,8 @@ use \Kernel\Smarty as Smarty;
  * @copyright (c) 2015, Tobias Pross
  * 
  * @todo Namespaces Namespaces umschreiben / use verwenden
- * @todo Exception Handling
+ * @todo Exception Handling / fuer Konstruktor/Destruktor bei der Instanzierung mit new
+ * @todo Template Vererbung pruefen (bei var_dump() landet der Head-Bereich im Body-Bereich)
  */
 
 /**
@@ -49,8 +50,6 @@ class kernel {
         $GLOBALS['smartyLibPath'] = $this->config['smarty']['dir'];
         $this->smarty = new Smarty\smarty_pe($this->config['smarty']);
         $this->setKernelMsg("Smarty successfully loaded");
-        
-        return true;
     }
     
     /**
@@ -125,7 +124,5 @@ class kernel {
         $this->database = null;
         $this->smarty = null;
         $this->kernelMsg = null;
-        
-        return true;
     }
 }

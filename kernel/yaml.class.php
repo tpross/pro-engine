@@ -28,7 +28,7 @@ abstract class aYaml implements iExtensions
     protected $fileName = null;
     protected $fileData = null;
     
-    abstract protected function readFile();
+    protected abstract function readFile();
     
     /**
      * Constructor
@@ -41,7 +41,6 @@ abstract class aYaml implements iExtensions
         
         $this->setFileName($fileName);
         
-        return true;
     }
     
     /**
@@ -126,7 +125,6 @@ abstract class aYaml implements iExtensions
      */
     public function __destruct() {
         
-        return true;
     }
 }
 
@@ -136,7 +134,6 @@ class yaml extends aYaml
         
         parent::__construct($fileName);
         
-        return true;
     }
     
     /**
@@ -157,7 +154,6 @@ class yaml extends aYaml
     public function __destruct() {
         parent::__destruct();
         
-        return true;
     }
 }
 

@@ -16,7 +16,6 @@ class helper {
     public function __construct() {
         
         $this->echobr('Hello Helper');
-        return true;
     }
     
     /**
@@ -60,6 +59,5 @@ class helper {
     
     public function __destruct() {
         
-        return true;
     }
 }

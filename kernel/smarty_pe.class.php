@@ -30,8 +30,6 @@ class smarty_pe extends \Smarty
         $this->caching = $ocnfig['caching'];
         
         //$smarty->testinstall();
-        
-        return true;
     }
     
 }
