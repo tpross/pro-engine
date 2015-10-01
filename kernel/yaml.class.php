@@ -17,6 +17,23 @@ interface iExtensions
     static function installDescription();
 }
 
+interface iExceptions
+{
+    public function customError();
+}
+
+class yaml_exception extends \Exception implements iExceptions
+{
+    public function customError() {
+        switch($this->getCode()) {
+            case 555: 
+                printf('YAML-Error: %s<br />Error-Code: %d', $this->getMessage(), $this->getCode());
+                break;
+            default:
+        }
+    }
+}
+
 /**
  * Handling YAML-Files (YAML Ain't Markup Language)
  * 
@@ -37,7 +54,7 @@ abstract class aYaml implements iExtensions
      * @param string $fileName
      * @return boolean 
      */
-    public function __construct($fileName) {
+    public function __construct($fileName = '') {
         
         $this->setFileName($fileName);
         
@@ -52,6 +69,15 @@ abstract class aYaml implements iExtensions
         
         if(null !== $this->fileName && true === file_exists($this->fileName)) {
             return true;
+        }
+        
+        try{
+            throw new yaml_exception("File do not exist - $this->fileName", 99);
+        }
+        
+        catch(yaml_exception $e) {
+            printf('YAML-Error: %s <br />Error-Code: %d', $e->getMessage(), $e->getCode());
+            die();
         }
         
         return false;
@@ -125,6 +151,8 @@ abstract class aYaml implements iExtensions
      */
     public function __destruct() {
         
+        $this->fileData = null;
+        $this->fileName = null;
     }
 }
 
@@ -153,7 +181,7 @@ class yaml extends aYaml
 
     public function __destruct() {
         parent::__destruct();
-        
+//        echo "yaml Destruct";
     }
 }
 

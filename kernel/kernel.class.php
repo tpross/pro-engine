@@ -10,9 +10,11 @@ use \Kernel\Smarty as Smarty;
  * @copyright (c) 2015, Tobias Pross
  * 
  * @todo Namespaces Namespaces umschreiben / use verwenden
- * @todo Exception Handling / fuer Konstruktor/Destruktor bei der Instanzierung mit new
+ * @todo Exception Handling
  * @todo Template Vererbung pruefen (bei var_dump() landet der Head-Bereich im Body-Bereich)
  */
+
+class kernel_exception extends \Exception {}
 
 /**
  * App-Class
@@ -21,7 +23,11 @@ use \Kernel\Smarty as Smarty;
  */
 class kernel {
     
-    private $neededExtensions = array('yaml');
+    /** 
+     * @var self Singleton Class Var 
+     */
+    private static $uniqueInstance = null;
+    private $neededExtensions = array('yaml', 'mod_rewrite');
     private $yaml = null;
     private $config = null;
     private $database = null;
@@ -29,27 +35,44 @@ class kernel {
     public $smarty = null;
     
     /**
-     * Constructor
+     * Protected for use as Singleton-Constructor
      * 
      * @return boolean
      */
-    public function __construct() {
+    protected function __construct() {
         
-//        Helper\helper::echobr('Hello Kernel');
-        $this->setKernelMsg('Hello Kernel');
+        $this->setKernelMsg('Kernel Bootup Debug >>>');
         
         $this->checkExtensions();
 
         $this->yaml = new Yaml\yaml('kernel/config.yml');
-//        Helper\helper::echobr($this->yaml->getFileName());
         $this->setKernelMsg("Config-File: <strong>" . $this->yaml->getFileName() . "</strong>");
         $readConfigMsg = $this->readConfig();
-//        Helper\helper::echobr($readConfigMsg);
         $this->setKernelMsg($readConfigMsg);
         
         $GLOBALS['smartyLibPath'] = $this->config['smarty']['dir'];
         $this->smarty = new Smarty\smarty_pe($this->config['smarty']);
+        $this->setKernelMsg("Smarty Lib Path: <strong>" . $GLOBALS['smartyLibPath'] . "</strong>");
         $this->setKernelMsg("Smarty successfully loaded");
+        $this->setKernelMsg("Kernel Constructor finally passed.");
+    }
+    
+    /* For Use as Singleton-Class */
+    private final function __clone() {}
+    
+    /**
+     * Checks, whether the class is instanced (Singleton)
+     * no Instances with "new"
+     * 
+     * @return Instance
+     */
+    public static function getInstance() {
+        
+        if(self::$uniqueInstance === null) {
+            self::$uniqueInstance = new kernel;
+        }
+        
+        return self::$uniqueInstance;
     }
     
     /**
@@ -62,11 +85,9 @@ class kernel {
         
         $msg = '';
         
-//        Helper\helper::echobr('readConfig');
         $this->setKernelMsg('readConfig');
         
         if(true === $this->yaml->readFile()) {
-//            \var_dump($this->yaml->getFileData());
             $this->config = $this->yaml->getFileData();
             
             $msg = "Configuration successfully loaded ";
@@ -85,18 +106,34 @@ class kernel {
      * @return boolean
      */
     private function checkExtensions() {
-        
+        $this->setKernelMsg("Check Extensions: " . implode(" / ", $this->neededExtensions));
         foreach($this->neededExtensions as $ext) {
+            $extNS = __NAMESPACE__ . "\\" . ucfirst($ext). "\\$ext";
+            if(!\class_exists($extNS)) {
+                $this->setKernelMsg("Error-Extension: No Class -> $extNS");
+            }
+            
             if(true === \extension_loaded($ext)) {
-//                Helper\helper::echobr("Extension: <strong>$ext</strong> loaded");
                 $this->setKernelMsg("Extension: <strong>$ext</strong> loaded");
-                $ext = __NAMESPACE__ . "\\" . ucfirst($ext). "\\$ext";
-//                Helper\helper::echobr("namespace: <strong>$ext</strong>");
-                $this->setKernelMsg("namespace: <strong>$ext</strong>");
+                $this->setKernelMsg("Needed Class: <strong>$extNS</strong>");
             } else {
-//                Helper\helper::echobr("Extension: <strong>$ext</strong> not loaded");
                 $this->setKernelMsg("Extension: <strong>$ext</strong> not loaded");
-                $ext::installDescription();
+                $extNSException = $extNS . '_exception';
+                if(\class_exists($extNSException)) {
+                    try {
+                        throw new $extNSException('Module not installed.', 555);
+                    } catch (\Exception $e) {
+                        if(\method_exists($e, 'customError')) {
+                            $e->customError();
+                            $extNS::installDescription();
+                        } else {
+                            echo "Unknown Module $ext.";
+                        }
+                        die();
+                    }
+                } else {
+                    $this->setKernelMsg("Error-Extension: No Exception-Class found -> $extNSException");
+                }
                 return false;
             }
         }
@@ -113,7 +150,7 @@ class kernel {
     
     public function getKernelMsg() {
         
-        return $this->kernelMsg;
+        return (array) $this->kernelMsg;
     }
     
     public function __destruct() {
@@ -124,5 +161,6 @@ class kernel {
         $this->database = null;
         $this->smarty = null;
         $this->kernelMsg = null;
+//        echo "Kernel Destruct";
     }
 }

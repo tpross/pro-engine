@@ -23,11 +23,11 @@ class smarty_pe extends \Smarty
         
         $this->setTemplateDir($config['templatesDir']);
         $this->setCompileDir($config['templates_cDir']);
-        $this->setConfigDir($config['configs_Dir']);
-        $this->setCacheDir($config['cache_Dir']);
+        $this->setConfigDir($config['configsDir']);
+        $this->setCacheDir($config['cacheDir']);
         
         $this->debugging = $config['debugging'];
-        $this->caching = $ocnfig['caching'];
+        $this->caching = $config['caching'];
         
         //$smarty->testinstall();
     }
