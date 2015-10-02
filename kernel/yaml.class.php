@@ -1,5 +1,5 @@
 <?php
-namespace Kernel\Yaml;
+namespace Kernel\Extensions;
 
 use Kernel\Helper as Helper;
 
@@ -7,15 +7,18 @@ use Kernel\Helper as Helper;
  * @author Tobias Pross
  * 
  * @copyright (c) 2015, Tobias Pross
+ * 
+ * @todo Klasse umbenennen extension_yaml
+ * @todo Exceptions in eigene Klasse auslagern
  */
 
 /**
  * Inherited class/namespace must use the same class-Name as the needed extension
  */
-interface iExtensions
-{
-    static function installDescription();
-}
+//interface iExtensions
+//{
+//    static function installDescription();
+//}
 
 interface iExceptions
 {

@@ -1,0 +1,9 @@
+RewriteEngine on
+RewriteBase /
+# RewriteCond %{QUERY_STRING} "/content/(.*)"
+# RewriteCond %{DOCUMENT_ROOT}/$1 !-f
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^content/(.*)$ index.php?content=$1 [L,NC]
+# RewriteLog "/var/www/pe/rewrite.log"
+# RewriteLogLevel 2

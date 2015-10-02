@@ -8,9 +8,11 @@ use \Kernel\Helper as Helper;
     $class = \str_replace('_exception', '', $class);
     $strParts = explode('\\', $class);
     if(file_exists("kernel/" . end($strParts) . ".class.php") && !\in_array($class, $excludeAutoload)) {
-        include "kernel/" . end($strParts) . ".class.php";
+        include_once "kernel/" . end($strParts) . ".class.php";
     }
 });
+
+//echo implode('/', apache_get_modules());
 
 Helper\helper::setErrorReporting('most');
 

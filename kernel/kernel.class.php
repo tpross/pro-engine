@@ -1,9 +1,6 @@
 <?php
 namespace Kernel;
 
-use \Kernel\Helper as Helper;
-use \Kernel\Yaml as Yaml;
-use \Kernel\Smarty as Smarty;
 /**
  * @author Tobias Pross
  * 
@@ -27,7 +24,8 @@ class kernel {
      * @var self Singleton Class Var 
      */
     private static $uniqueInstance = null;
-    private $neededExtensions = array('yaml', 'mod_rewrite');
+    private $neededExtensions = array('yaml');
+    private $neededApacheModules = array('mod_rewrite');
     private $yaml = null;
     private $config = null;
     private $database = null;
@@ -44,8 +42,10 @@ class kernel {
         $this->setKernelMsg('Kernel Bootup Debug >>>');
         
         $this->checkExtensions();
+        
+        $this->checkApacheModules();
 
-        $this->yaml = new Yaml\yaml('kernel/config.yml');
+        $this->yaml = new Extensions\yaml('kernel/config.yml');
         $this->setKernelMsg("Config-File: <strong>" . $this->yaml->getFileName() . "</strong>");
         $readConfigMsg = $this->readConfig();
         $this->setKernelMsg($readConfigMsg);
@@ -108,7 +108,7 @@ class kernel {
     private function checkExtensions() {
         $this->setKernelMsg("Check Extensions: " . implode(" / ", $this->neededExtensions));
         foreach($this->neededExtensions as $ext) {
-            $extNS = __NAMESPACE__ . "\\" . ucfirst($ext). "\\$ext";
+            $extNS = __NAMESPACE__ . "\\Extensions\\$ext";
             if(!\class_exists($extNS)) {
                 $this->setKernelMsg("Error-Extension: No Class -> $extNS");
             }
@@ -141,6 +141,17 @@ class kernel {
         return true;
     }
     
+    private function checkApacheModules() {
+        $this->setKernelMsg("Check Apache Modules: " . implode(" / ", $this->neededApacheModules));
+        
+        foreach($this->neededApacheModules as $module) {
+            $moduleClass = "\\Kernel\\ApacheModules\\apacheModule_{$module}";
+            $module = new $moduleClass();
+        }
+        
+        return false;
+    }
+    
     protected function setKernelMsg($msg) {
         
         \array_push($this->kernelMsg, $msg);
@@ -156,6 +167,7 @@ class kernel {
     public function __destruct() {
         
         $this->neededExtensions = null;
+        $this->neededApacheModules = null;
         $this->yaml = null;
         $this->config = null;
         $this->database = null;
